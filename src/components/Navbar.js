@@ -26,8 +26,8 @@ function Navbar() {
     zIndex: 1000,
     width: '90%',
     maxWidth: '1200px',
-    backgroundColor: scrolled ? '#fff' : 'rgba(254, 254, 255, 0.9)',
-    boxShadow: scrolled ? '0 4px 20px rgba(0,0,0,0.1)' : '0 2px 10px rgba(0,0,0,0.05)',
+    backgroundColor: '#000',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
     borderRadius: '16px',
     display: 'flex',
     justifyContent: 'space-between',
@@ -54,7 +54,7 @@ function Navbar() {
   const navLinkStyle = (isActive) => ({
     textDecoration: 'none',
     fontWeight: '500',
-    color: isActive ? '#007bff' : '#333',
+    color: isActive ? '#007bff' : '#ffffff',
     fontSize: '1rem',
     padding: '8px 14px',
     borderRadius: '8px',
@@ -72,7 +72,7 @@ function Navbar() {
   const lineStyle = {
     width: '24px',
     height: '3px',
-    backgroundColor: '#333',
+    backgroundColor: '#ffffff',
     borderRadius: '3px',
     transition: '0.3s',
   };
@@ -91,7 +91,22 @@ function Navbar() {
     alignItems: 'center',
     gap: '16px',
     boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+    overflow: 'hidden',
   };
+
+  const mobileNavLinkStyle = (index, isActive) => ({
+    textDecoration: 'none',
+    fontWeight: '500',
+    color: isActive ? '#007bff' : '#555', // grey by default
+    fontSize: '1rem',
+    padding: '8px 14px',
+    borderRadius: '8px',
+    transition: 'all 0.3s',
+    backgroundColor: isActive ? 'rgba(0, 123, 255, 0.1)' : 'transparent',
+    opacity: 0,
+    animation: `dropdownFade 0.5s ease forwards`,
+    animationDelay: `${index * 0.1}s`,
+  });
 
   return (
     <nav style={navContainer}>
@@ -132,7 +147,7 @@ function Navbar() {
               key={path}
               to={path}
               onClick={() => setIsOpen(false)}
-              style={navLinkStyle(location.pathname === path)}
+              style={mobileNavLinkStyle(i, location.pathname === path)}
             >
               {['Home', 'Projects', 'Certificates', 'Contact'][i]}
             </Link>
@@ -140,9 +155,20 @@ function Navbar() {
         </div>
       )}
 
-      {/* Responsive Styles */}
+      {/* Styles */}
       <style>
         {`
+          @keyframes dropdownFade {
+            0% {
+              opacity: 0;
+              transform: translateY(-10px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
           @media (max-width: 768px) {
             .nav-links {
               display: none !important;
@@ -151,6 +177,7 @@ function Navbar() {
               display: flex !important;
             }
           }
+
           @media (min-width: 769px) {
             .mobile-menu {
               display: none !important;
